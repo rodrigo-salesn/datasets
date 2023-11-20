@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playlist-recommender-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rodrigonascimento-playlist-recommender
+  template:
+    metadata:
+      labels:
+        app: rodrigonascimento-playlist-recommender
+    spec:
+      containers:
+      - name: ML_Container
+        image: rodrigosalesn/ml-container:1.0
+        volumeMounts:
+        - name: shared-storage
+          mountPath: /shared
+      - name: Front_Container
+        image: rodrigosalesn/front-container:1.0
+        volumeMounts:
+        - name: shared-storage
+          mountPath: /shared
+        ports:
+        - containerPort: 32213
+      volumes:
+        -name: shared-storage
+        persistenVolumeClaim:
+          claimName: shared-pvc
