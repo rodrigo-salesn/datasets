@@ -13,7 +13,7 @@ spec:
         app: rodrigonascimento-playlist-recommender
     spec:
       containers:
-      - name: ML_Container
+      - name: ml-container
         image: rodrigosalesn/ml-container:1.0
         env:
         - name: URL_VAR
@@ -21,7 +21,7 @@ spec:
         volumeMounts:
         - name: shared-storage
           mountPath: /shared
-      - name: Front_Container
+      - name: front-container
         image: rodrigosalesn/front-container:1.0
         volumeMounts:
         - name: shared-storage
@@ -29,12 +29,10 @@ spec:
         ports:
         - containerPort: 32213
       volumes:
-        -name: shared-storage
-        persistenVolumeClaim:
+      - name: shared-storage
+        persistentVolumeClaim:
           claimName: shared-pvc
-
 ---
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
