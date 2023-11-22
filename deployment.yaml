@@ -15,6 +15,9 @@ spec:
       containers:
       - name: ML_Container
         image: rodrigosalesn/ml-container:1.0
+        env:
+        - name: URL_VAR
+          value: "https://raw.githubusercontent.com/rodrigo-salesn/project02/master/2023_spotify_ds1.csv"
         volumeMounts:
         - name: shared-storage
           mountPath: /shared
