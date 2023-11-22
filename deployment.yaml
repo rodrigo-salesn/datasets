@@ -1,9 +1,25 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: rodrigonascimento
+  name: project2-pv-rodrigonascimento
+  labels:
+    type: local
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: playlist-recommender-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: rodrigonascimento-playlist-recommender
@@ -14,33 +30,23 @@ spec:
     spec:
       containers:
       - name: ml-container
-        image: rodrigosalesn/ml-container:1.0
+        image: docker.io/rodrigosalesn/ml-container:1.0
+        imagePullPolicy: Always
         env:
         - name: URL_VAR
           value: "https://raw.githubusercontent.com/rodrigo-salesn/project02/master/2023_spotify_ds1.csv"
         volumeMounts:
         - name: shared-storage
-          mountPath: /shared
+          mountPath: shared
       - name: front-container
-        image: rodrigosalesn/front-container:1.0
+        image: docker.io/rodrigosalesn/front-container:1.0
+        imagePullPolicy: Always
         volumeMounts:
         - name: shared-storage
-          mountPath: /shared
+          mountPath: shared
         ports:
         - containerPort: 32213
       volumes:
       - name: shared-storage
         persistentVolumeClaim:
-          claimName: shared-pvc
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: shared-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 1Gi
+          claimName: project2-pv-rodrigonascimento
