@@ -17,7 +17,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: playlist-recommender-deployment-2
+  name: playlist-recommender-deployment
 spec:
   replicas: 1
   selector:
@@ -34,7 +34,7 @@ spec:
         imagePullPolicy: Always
         env:
         - name: URL_VAR
-          value: "https://raw.githubusercontent.com/rodrigo-salesn/project02/master/2023_spotify_ds2.csv"
+          value: "https://raw.githubusercontent.com/rodrigo-salesn/project02/master/2023_spotify_ds1.csv"
         volumeMounts:
         - name: shared-storage
           mountPath: shared
